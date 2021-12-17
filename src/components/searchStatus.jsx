@@ -23,9 +23,7 @@ const SearchStatus = (props) => {
 
       const getUsersCounter = (number) => (<span className={getCounterClasses(number)}>{getCounterText(number)}</span>);
 
-    return <>
-        {getUsersCounter(users.length)}
-    </>
+    return getUsersCounter(users.length)
 }
 
 export default SearchStatus;

@@ -16,7 +16,7 @@ const User = (props) => {
                 : setBookmark('bi bi-bookmark');
     }
 
-    return <>
+    return (
         <tr>
             <td>{user.name}</td>
             <td>{getQualities(user.qualities)}</td>
@@ -26,7 +26,7 @@ const User = (props) => {
             <td><Bookmark type={bookmarkType} onToggle={toggleBookmark} /></td>
             <td><button type="button" className="btn btn-danger" onClick={() => {props.onRemove(user._id)}}>delete</button></td>
         </tr>
-    </>
+    );
 }
 
 export default User;

@@ -8,9 +8,9 @@ const Qualitie = (props) => {
         return classes += 'bg-' + color;
     }
 
-    return <>
+    return (
         <span className={getQualitieClasses(qualitie.color)}>{qualitie.name}</span>
-    </>
+    );
 }
 
 export default Qualitie;

@@ -10,10 +10,12 @@ const App = () => {
         setUsers(users.filter(user => user._id !== id));
     }
 
-    return <>
-        <SearchStatus users={users} />
-        <Users users={users} onRemove={removeUser} />
-    </>
+    return (
+        <>
+            <SearchStatus users={users} />
+            <Users users={users} onRemove={removeUser} />
+        </>
+    );
 }
 
 export default App;

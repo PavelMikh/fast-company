@@ -30,16 +30,16 @@ const Users = (props) => {
 
   const getUsersTable = (number) => {
     if (number) {
-      return <table className="table">
-               {getTableHead()}
-               {getTableBody()}
-             </table>
+      return (
+        <table className="table">
+          {getTableHead()}
+          {getTableBody()}
+        </table>
+      );
     }
   };
 
-  return <>  
-    {getUsersTable(users.length)}
-  </>
+  return getUsersTable(users.length)
 }
 
 export default Users;
