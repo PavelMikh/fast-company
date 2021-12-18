@@ -10,12 +10,20 @@ const App = () => {
         setUsers(users.filter(user => user._id !== id));
     }
 
-    return (
-        <>
-            <SearchStatus users={users} />
-            <Users users={users} onRemove={removeUser} />
-        </>
-    );
+    const renderApp = () => {
+        if (!users.length) {
+            return <SearchStatus users={users} />
+        }
+
+        return (
+            <>
+                <SearchStatus users={users} />
+                <Users users={users} onRemove={removeUser} />
+            </>
+        );
+    }
+
+    return renderApp();
 }
 
 export default App;
