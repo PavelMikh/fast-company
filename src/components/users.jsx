@@ -2,7 +2,7 @@ import React from 'react';
 import User from './user';
 
 const Users = (props) => {
-  const {users} = props;
+  const {users, bookmarks} = props;
 
   const getTableHead = () => (
     <thead>
@@ -18,11 +18,21 @@ const Users = (props) => {
     </thead>
   );
 
+  const getBookmarkById = (id) => {
+    return bookmarks.filter(bookmark => bookmark.id === id)[0];
+  }
+
   const getTableBody = () => (
     <tbody>
       {
         users.map(user => (
-          <User key={user._id} user={user} onRemove={props.onRemove} />
+          <User 
+            key={user._id}
+            user={user}
+            bookmark={getBookmarkById(user._id)}
+            onRemove={props.onRemove}
+            onBookmarkClick={props.onBookmarkClick}
+          />
         ))
       }     
     </tbody>
