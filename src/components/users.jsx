@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import User from './user';
+import Pagination from './pagination';
+import {paginate} from '../utils/paginate';
 
 const Users = (props) => {
   const {users, bookmarks} = props;
+  const count = users.length;
+  const pageSize = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+  const userCrop = paginate(users, currentPage, pageSize);
+
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  }
 
   const getTableHead = () => (
     <thead>
@@ -25,7 +35,7 @@ const Users = (props) => {
   const getTableBody = () => (
     <tbody>
       {
-        users.map(user => (
+        userCrop.map(user => (
           <User 
             key={user._id}
             user={user}
@@ -40,14 +50,22 @@ const Users = (props) => {
 
   const getUsersTable = (number) => {
     return (
-      <table className="table">
-        {getTableHead()}
-        {getTableBody()}
-      </table>
+      <>
+        <table className="table">
+          {getTableHead()}
+          {getTableBody()}
+        </table>
+        <Pagination
+          itemsCount={count}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      </>
     );
   };
 
-  return getUsersTable(users.length)
+  return getUsersTable(count);
 }
 
 export default Users;
