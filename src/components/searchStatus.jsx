@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchStatus = ({ users }) => {
+const SearchStatus = ({ length }) => {
     const getCounterClasses = (number) => {
         let classes = "badge  fs-3 ";
         return number !== 0
@@ -30,7 +30,7 @@ const SearchStatus = ({ users }) => {
         </span>
     );
 
-    return getUsersCounter(users.length);
+    return getUsersCounter(length);
 };
 
 export default SearchStatus;
