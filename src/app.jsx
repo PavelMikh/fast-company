@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "./api";
 import Users from "./components/users";
 
 const App = () => {
-    const [users, setUsers] = useState(api.users.fetchAll());
-    const [bookmarks, setBookmarks] = useState(
-        users.map((user) => {
-            return { id: user._id, type: "bi bi-bookmark" };
-        })
-    );
+    const [users, setUsers] = useState();
+    const [bookmarks, setBookmarks] = useState();
+
+    useEffect(() => {
+        api.users.fetchAll().then((data) => {
+            setUsers(data);
+            setBookmarks(data.map((user) => {
+                return { id: user._id, type: "bi bi-bookmark" };
+            }));
+        });
+    }, []);
 
     const toggleBookmark = (id) => {
         const newBookmarkState = bookmarks.map((bookmark) => {
@@ -28,20 +33,18 @@ const App = () => {
         setUsers(users.filter((user) => user._id !== id));
     };
 
-    const renderApp = () => {
-        return (
-            <>
+    return (
+        <>
+            {users && bookmarks && (
                 <Users
                     users={users}
                     bookmarks={bookmarks}
                     onRemove={removeUser}
                     onBookmarkClick={toggleBookmark}
                 />
-            </>
-        );
-    };
-
-    return renderApp();
+            )}
+        </>
+    );
 };
 
 export default App;

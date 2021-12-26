@@ -5,6 +5,7 @@ import { paginate } from "../utils/paginate";
 import api from "../api";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
+import { objEqual } from "../utils/objectEqual";
 
 const Users = ({ users, bookmarks, onRemove, onBookmarkClick }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +26,7 @@ const Users = ({ users, bookmarks, onRemove, onBookmarkClick }) => {
     };
 
     const filteredUsers = selectedProf
-        ? users.filter((user) => user.profession === selectedProf)
+        ? users.filter((user) => objEqual(user.profession, selectedProf))
         : users;
     const count = filteredUsers.length;
     const userCrop = paginate(filteredUsers, currentPage, pageSize);
