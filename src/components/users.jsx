@@ -13,9 +13,12 @@ const Users = () => {
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const [caret, setCaret] = useState({ selectedPath: sortBy.path, status: sortBy.order === "asc" });
-
+    const [caret, setCaret] = useState();
     const [users, setUsers] = useState();
+
+    useEffect(() => {
+        setCaret({ selectedPath: sortBy.path, status: sortBy.order === "asc" });
+    }, [sortBy]);
 
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
@@ -54,7 +57,6 @@ const Users = () => {
 
     const handleSort = (item) => {
         setSortBy(item);
-        setCaret({ selectedPath: item.path, status: item.order === "asc" });
     };
 
     if (users) {
