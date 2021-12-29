@@ -36,8 +36,7 @@ const GroupList = ({
                     >
                         {items[item][contentProperty]}
                     </li>
-                ))
-            }
+                ))}
         </ul>
     );
 };
