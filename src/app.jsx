@@ -1,50 +1,38 @@
 import React, { useState, useEffect } from "react";
-import api from "./api";
 import Users from "./components/users";
 
-const App = () => {
+import api from "./api";
+
+function App() {
     const [users, setUsers] = useState();
-    const [bookmarks, setBookmarks] = useState();
-
     useEffect(() => {
-        api.users.fetchAll().then((data) => {
-            setUsers(data);
-            setBookmarks(data.map((user) => {
-                return { id: user._id, type: "bi bi-bookmark" };
-            }));
-        });
+        api.users.fetchAll().then((data) => setUsers(data));
     }, []);
-
-    const toggleBookmark = (id) => {
-        const newBookmarkState = bookmarks.map((bookmark) => {
-            if (bookmark.id === id) {
-                bookmark.type === "bi bi-bookmark"
-                    ? (bookmark.type = "bi bi-bookmark-fill")
-                    : (bookmark.type = "bi bi-bookmark");
-            }
-
-            return bookmark;
-        });
-
-        setBookmarks(newBookmarkState);
+    const handleDelete = (userId) => {
+        setUsers(users.filter((user) => user._id !== userId));
     };
-
-    const removeUser = (id) => {
-        setUsers(users.filter((user) => user._id !== id));
+    const handleToggleBookMark = (id) => {
+        setUsers(
+            users.map((user) => {
+                if (user._id === id) {
+                    return { ...user, bookmark: !user.bookmark };
+                }
+                return user;
+            })
+        );
+        console.log(id);
     };
-
     return (
-        <>
-            {users && bookmarks && (
+        <div>
+            {users && (
                 <Users
+                    onDelete={handleDelete}
+                    onToggleBookMark={handleToggleBookMark}
                     users={users}
-                    bookmarks={bookmarks}
-                    onRemove={removeUser}
-                    onBookmarkClick={toggleBookmark}
                 />
             )}
-        </>
+        </div>
     );
-};
+}
 
 export default App;

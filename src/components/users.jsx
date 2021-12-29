@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
-import User from "./user";
-import Pagination from "./pagination";
+import PropTypes from "prop-types";
 import { paginate } from "../utils/paginate";
+import Pagination from "./pagination";
+import User from "./user";
 import api from "../api";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
-import { objEqual } from "../utils/objectEqual";
-
-const Users = ({ users, bookmarks, onRemove, onBookmarkClick }) => {
+const Users = ({ users: allUsers, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfessions] = useState();
+    const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const pageSize = 4;
 
+    const pageSize = 2;
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data));
+        api.professions.fetchAll().then((data) => setProfession(data));
     }, []);
-
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
@@ -25,90 +23,77 @@ const Users = ({ users, bookmarks, onRemove, onBookmarkClick }) => {
         setSelectedProf(item);
     };
 
-    const filteredUsers = selectedProf
-        ? users.filter((user) => objEqual(user.profession, selectedProf))
-        : users;
-    const count = filteredUsers.length;
-    const userCrop = paginate(filteredUsers, currentPage, pageSize);
-
-    const clearFilter = () => setSelectedProf();
-
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
+    const filteredUsers = selectedProf
+        ? allUsers.filter(
+            (user) =>
+                JSON.stringify(user.profession) ===
+                JSON.stringify(selectedProf)
+        )
+        : allUsers;
 
-    const getTableHead = () => (
-        <thead>
-            <tr>
-                <th scope="col">Имя</th>
-                <th scope="col">Качества</th>
-                <th scope="col">Профессия</th>
-                <th scope="col">Встретился, раз</th>
-                <th scope="col">Оценка</th>
-                <th scope="col">Избранное</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-    );
-
-    const getBookmarkById = (id) => {
-        return bookmarks.filter((bookmark) => bookmark.id === id)[0];
+    const count = filteredUsers.length;
+    const usersCrop = paginate(filteredUsers, currentPage, pageSize);
+    const clearFilter = () => {
+        setSelectedProf();
     };
 
-    const getTableBody = () => (
-        <tbody>
-            {userCrop.map((user) => (
-                <User
-                    key={user._id}
-                    user={user}
-                    bookmark={getBookmarkById(user._id)}
-                    onRemove={onRemove}
-                    onBookmarkClick={onBookmarkClick}
-                />
-            ))}
-        </tbody>
-    );
-
-    const getUsersTable = (number) => {
-        return (
-            <div className="d-flex justify-content-center">
-                {professions && (
-                    <div className="d-flex flex-column flex-shrink-0 p-3">
-                        <GroupList
-                            items={professions}
-                            onItemSelect={handleProfessionSelect}
-                            selectedItem={selectedProf}
-                        />
-                        <button
-                            className="btn btn-secondary mt-2"
-                            onClick={clearFilter}
-                        >
-                            Очистить
-                        </button>
-                    </div>
+    return (
+        <div className="d-flex">
+            {professions && (
+                <div className="d-flex flex-column flex-shrink-0 p-3">
+                    <GroupList
+                        selectedItem={selectedProf}
+                        items={professions}
+                        onItemSelect={handleProfessionSelect}
+                    />
+                    <button
+                        className="btn btn-secondary mt-2"
+                        onClick={clearFilter}
+                    >
+                        {" "}
+                        Очиститть
+                    </button>
+                </div>
+            )}
+            <div className="d-flex flex-column">
+                <SearchStatus length={count} />
+                {count > 0 && (
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Качества</th>
+                                <th scope="col">Провфессия</th>
+                                <th scope="col">Встретился, раз</th>
+                                <th scope="col">Оценка</th>
+                                <th scope="col">Избранное</th>
+                                <th />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {usersCrop.map((user) => (
+                                <User {...rest} {...user} key={user._id} />
+                            ))}
+                        </tbody>
+                    </table>
                 )}
-                <div className="d-flex flex-column">
-                    <SearchStatus length={count} />
-                    {count > 0 && (
-                        <table className="table">
-                            {getTableHead()}
-                            {getTableBody()}
-                        </table>
-                    )}
-                    <div className="d-flex justify-content-center">
-                        <Pagination
-                            itemsCount={count}
-                            pageSize={pageSize}
-                            currentPage={currentPage}
-                            onPageChange={handlePageChange}
-                        />
-                    </div>
+                <div className="d-flex justify-content-center">
+                    <Pagination
+                        itemsCount={count}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
                 </div>
             </div>
-        );
-    };
-
-    return getUsersTable(count);
+        </div>
+    );
+};
+Users.propTypes = {
+    users: PropTypes.array
 };
 
 export default Users;
