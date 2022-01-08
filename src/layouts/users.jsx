@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { paginate } from "../utils/paginate";
-import Pagination from "./pagination";
+import Pagination from "../components/pagination";
 import api from "../api";
-import GroupList from "./groupList";
-import SearchStatus from "./searchStatus";
-import UsersTable from "./usersTable";
+import GroupList from "../components/groupList";
+import SearchStatus from "../components/searchStatus";
+import UsersTable from "../components/usersTable";
 import _ from "lodash";
+import { useParams } from "react-router-dom";
+import UserPage from "../components/userPage";
 
 const Users = () => {
+    const params = useParams();
+    const { userId } = params;
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfession] = useState();
+    const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [caret, setCaret] = useState();
@@ -41,7 +45,7 @@ const Users = () => {
 
     const pageSize = 8;
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfession(data));
+        api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
     useEffect(() => {
         setCurrentPage(1);
@@ -59,6 +63,10 @@ const Users = () => {
         setSortBy(item);
     };
 
+    if (userId) {
+        return <UserPage id={userId} />;
+    }
+
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter(
@@ -69,7 +77,11 @@ const Users = () => {
             : users;
 
         const count = filteredUsers.length;
-        const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
+        const sortedUsers = _.orderBy(
+            filteredUsers,
+            [sortBy.path],
+            [sortBy.order]
+        );
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
             setSelectedProf();

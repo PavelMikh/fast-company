@@ -6,12 +6,14 @@ import TableBody from "./tableBody";
 const Table = ({ onSort, caret, selectedSort, columns, users, children }) => {
     return (
         <table className="table">
-            {children ||
+            {children || (
                 <>
-                    <TableHeader {...{ onSort, caret, selectedSort, columns }} />
+                    <TableHeader
+                        {...{ onSort, caret, selectedSort, columns }}
+                    />
                     <TableBody {...{ data: users, columns }} />
                 </>
-            }
+            )}
         </table>
     );
 };

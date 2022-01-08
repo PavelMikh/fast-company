@@ -30,7 +30,9 @@ const TableHeader = ({ onSort, caret, selectedSort, columns }) => {
                             {...{ role: columns[column].path && "button" }}
                         >
                             {columns[column].name}
-                            {(caret.selectedPath === columns[column].path && <Caret {...{ status: caret.status }}/>)}
+                            {caret.selectedPath === columns[column].path && (
+                                <Caret {...{ status: caret.status }} />
+                            )}
                         </th>
                     );
                 })}
