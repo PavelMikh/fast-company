@@ -25,9 +25,9 @@ const SearchStatus = ({ length }) => {
     };
 
     const getUsersCounter = (number) => (
-        <span className={getCounterClasses(number)}>
+        <div className={getCounterClasses(number) + " mb-4"}>
             {getCounterText(number)}
-        </span>
+        </div>
     );
 
     return getUsersCounter(length);
