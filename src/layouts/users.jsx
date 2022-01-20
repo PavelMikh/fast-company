@@ -7,7 +7,7 @@ import GroupList from "../components/groupList";
 import SearchStatus from "../components/searchStatus";
 import UsersTable from "../components/usersTable";
 import _ from "lodash";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import UserPage from "../components/userPage";
 import Search from "../components/search";
 
@@ -22,23 +22,9 @@ const Users = () => {
     const [caret, setCaret] = useState();
     const [users, setUsers] = useState();
     const [searchValue, setSearchValue] = useState("");
-    const history = useHistory();
     const location = useLocation();
     const useQuery = () => new URLSearchParams(location.search);
     const query = useQuery().get("search");
-    console.log("query params: ", query);
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams();
-
-        if (searchValue) {
-            searchParams.append("search", searchValue);
-        } else {
-            searchParams.delete("search");
-        }
-
-        history.push({ search: searchParams.toString() });
-    }, [searchValue, history]);
 
     useEffect(() => {
         setCaret({ selectedPath: sortBy.path, status: sortBy.order === "asc" });
@@ -64,6 +50,7 @@ const Users = () => {
     };
 
     const handleSearchChange = (value) => {
+        setSelectedProf();
         setSearchValue(value);
     };
 
@@ -76,6 +63,7 @@ const Users = () => {
     }, [selectedProf]);
 
     const handleProfessionSelect = (item) => {
+        handleSearchChange("");
         setSelectedProf(item);
     };
 

@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const Search = ({ value, onChange }) => {
+    const history = useHistory();
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams();
+
+        if (value) {
+            searchParams.append("search", value);
+        } else {
+            searchParams.delete("search");
+        }
+
+        history.push({ search: searchParams.toString() });
+    }, [value]);
+
     return (
         <form>
             <input
