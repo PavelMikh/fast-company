@@ -71,7 +71,7 @@ const LoginForm = () => {
                 name="password"
                 error={errors.password}
             />
-            <button type="submit" disabled={isValid} className="btn btn-primary mx-auto w-100">Submit</button>
+            <button type="submit" disabled={isValid} className="btn btn-primary mx-auto w-100">Войти</button>
         </form>
     );
 };

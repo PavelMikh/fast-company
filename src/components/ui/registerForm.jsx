@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import TextField from "../common/form/textField";
+import SelectField from "../common/form/selectField";
 import { validator } from "../../utils/validator";
+import api from "../../api";
+import RadioField from "../common/form/radioField";
 
 const RegisterForm = () => {
-    const [data, setData] = useState({ email: "", password: "" });
+    const [data, setData] = useState({ email: "", password: "", profession: "", sex: "male" });
     const [errors, setErrors] = useState({});
+    const [professions, setProfessions] = useState();
     const isValid = Object.keys(errors).length !== 0;
+
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfessions(data));
+    }, []);
 
     const validatorConfig = {
         email: {
@@ -29,6 +37,11 @@ const RegisterForm = () => {
             min: {
                 message: "Минимальная длина пароля 8 символов.",
                 value: 8
+            }
+        },
+        profession: {
+            isRequired: {
+                message: "Необходимо выбрать профессию."
             }
         }
     };
@@ -71,12 +84,32 @@ const RegisterForm = () => {
                 name="password"
                 error={errors.password}
             />
+            <SelectField
+                label="Профессия"
+                name="profession"
+                value={data.profession}
+                onChange={handleChange}
+                error={errors.profession}
+                options={professions}
+                defaultOption="Выбор профессии"
+            />
+            <RadioField
+                label="Пол"
+                name="sex"
+                value={data.sex}
+                onChange={handleChange}
+                options={[
+                    { name: "Мужской", value: "male" },
+                    { name: "Женский", value: "female" },
+                    { name: "Другое", value: "other" }
+                ]}
+            />
             <button
                 type="submit"
                 disabled={isValid}
                 className="btn btn-primary mx-auto w-100"
             >
-                Submit
+                Зарегистрироваться
             </button>
         </form>
     );
