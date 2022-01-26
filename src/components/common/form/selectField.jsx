@@ -12,6 +12,10 @@ const SelectField = ({ label, name, value, onChange, error, options, defaultOpti
         return "form-select" + (error ? " is-invalid" : "");
     };
 
+    const handleChange = ({ target }) => {
+        onChange({ name: target.name, value: target.value });
+    };
+
     return (
         <div className="mb-4">
             <label htmlFor="validationCustom04" className="form-label">{label}</label>
@@ -20,7 +24,7 @@ const SelectField = ({ label, name, value, onChange, error, options, defaultOpti
                 id="validationCustom04"
                 name={name}
                 value={value}
-                onChange={onChange}
+                onChange={handleChange}
                 error={error}
             >
                 <option disabled value="">{defaultOption}</option>
