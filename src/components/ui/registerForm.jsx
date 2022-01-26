@@ -4,15 +4,18 @@ import SelectField from "../common/form/selectField";
 import { validator } from "../../utils/validator";
 import api from "../../api";
 import RadioField from "../common/form/radioField";
+import MultiSelectField from "../common/form/multiSelectField";
 
 const RegisterForm = () => {
-    const [data, setData] = useState({ email: "", password: "", profession: "", sex: "male" });
+    const [data, setData] = useState({ email: "", password: "", profession: "", sex: "male", qualities: [] });
     const [errors, setErrors] = useState({});
     const [professions, setProfessions] = useState();
+    const [qualities, setQualities] = useState({});
     const isValid = Object.keys(errors).length !== 0;
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
+        api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
 
     const validatorConfig = {
@@ -56,8 +59,10 @@ const RegisterForm = () => {
         validate();
     }, [data]);
 
-    const handleChange = ({ target }) => {
-        setData((prevState) => ({ ...prevState, [target.name]: target.value }));
+    const handleChange = (target) => {
+        if (target) {
+            setData((prevState) => ({ ...prevState, [target.name]: target.value }));
+        }
     };
 
     const handleSubmit = (e) => {
@@ -103,6 +108,13 @@ const RegisterForm = () => {
                     { name: "Женский", value: "female" },
                     { name: "Другое", value: "other" }
                 ]}
+            />
+            <MultiSelectField
+                label="Качества"
+                options={qualities}
+                onChange={handleChange}
+                placeholder="Выберите свои качества"
+                name="qualities"
             />
             <button
                 type="submit"
