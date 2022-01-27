@@ -12,7 +12,7 @@ const UserPage = ({ id }) => {
         api.users.getById(id).then((data) => setUser(data));
     }, []);
 
-    const handleToUsersTable = () => {
+    const handleButtonClick = () => {
         history.push("/users");
     };
 
@@ -25,7 +25,7 @@ const UserPage = ({ id }) => {
             </div>
             <div>Встретился раз: {user.completedMeetings}</div>
             <h2>Оценка: {user.rate}</h2>
-            <button onClick={handleToUsersTable}>Все пользователи</button>
+            <button onClick={handleButtonClick}>Все пользователи</button>
         </>
         : "loading user data...";
 };
