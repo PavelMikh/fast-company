@@ -13,7 +13,7 @@ const UserPage = ({ id }) => {
     }, []);
 
     const handleButtonClick = () => {
-        history.push("/users");
+        history.push(`${history.location.pathname}/edit`);
     };
 
     return user
@@ -25,9 +25,9 @@ const UserPage = ({ id }) => {
             </div>
             <div>Встретился раз: {user.completedMeetings}</div>
             <h2>Оценка: {user.rate}</h2>
-            <button onClick={handleButtonClick}>Все пользователи</button>
+            <button onClick={handleButtonClick}>Редактировать данные</button>
         </>
-        : "loading user data...";
+        : <p>Загрузка данных...</p>;
 };
 
 UserPage.propTypes = {
