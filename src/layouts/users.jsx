@@ -13,11 +13,17 @@ const Users = () => {
         <>
             {userId
                 ? (edit
-                    ? <UserEditPage
-                        history={history}
-                        urlParam={edit}
-                        id={userId}
-                    />
+                    ? <div className="container mt-5">
+                        <div className="row">
+                            <div className="col-md-6 offset-md-3 shadow p-4">
+                                <UserEditPage
+                                    history={history}
+                                    urlParam={edit}
+                                    id={userId}
+                                />
+                            </div>
+                        </div>
+                    </div>
                     : <UserPage id={userId} />)
                 : <UsersList />}
         </>
