@@ -15,6 +15,36 @@ const UserEditPage = ({ history, urlParam, id }) => {
         history.replace(`${currentPath}`.replace(`/${urlParam}`, ""));
     };
 
+    const getInitialValue = () => {
+        const data = {
+            email: "",
+            profession: "",
+            sex: "male",
+            qualities: []
+        };
+        const initialValue = Object.keys(data).reduce((acc, keyName) => {
+            const isContain = Object.prototype.hasOwnProperty.call(user, keyName);
+            if (isContain) {
+                if (keyName === "profession") {
+                    acc[keyName] = user[keyName]._id;
+                    return acc;
+                }
+
+                if (keyName === "qualities") {
+                    acc[keyName] = user[keyName].map((prop) => {
+                        return { label: prop.name, value: prop._id };
+                    });
+                    return acc;
+                }
+
+                acc[keyName] = user[keyName];
+            }
+            return acc;
+        }, {});
+
+        return initialValue;
+    };
+
     return (
         user
             ? (
@@ -22,7 +52,7 @@ const UserEditPage = ({ history, urlParam, id }) => {
                     <div className="row">
                         <div className="col-md-6 offset-md-3 shadow p-4">
                             <EditForm
-                                user={user}
+                                initialValue={getInitialValue()}
                                 onSubmit={handleSubmit}
                             />
                         </div>

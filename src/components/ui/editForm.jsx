@@ -8,13 +8,9 @@ import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
 
-const EditForm = ({ user, onSubmit }) => {
-    const [data, setData] = useState({
-        email: "",
-        profession: "",
-        sex: "male",
-        qualities: []
-    });
+const EditForm = ({ initialValue, onSubmit }) => {
+    console.log("initial value", initialValue);
+    const [data, setData] = useState(initialValue);
     const [professions, setProfessions] = useState();
     const [qualities, setQualities] = useState({});
     const [errors, setErrors] = useState({});
@@ -95,7 +91,7 @@ const EditForm = ({ user, onSubmit }) => {
 };
 
 EditForm.propTypes = {
-    user: PropTypes.object,
+    initialValue: PropTypes.object,
     onSubmit: PropTypes.func
 };
 
