@@ -6,6 +6,7 @@ import api from "../../api";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
+import validatorConfig from "../../config/registerForm";
 
 const RegisterForm = () => {
     const [data, setData] = useState({
@@ -25,42 +26,6 @@ const RegisterForm = () => {
         api.professions.fetchAll().then((data) => setProfessions(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
-
-    const validatorConfig = {
-        email: {
-            isRequired: {
-                message: "Электронная почта обязательна для заполнения."
-            },
-            isEmail: {
-                message: "Электронная почта введена некорректно."
-            }
-        },
-        password: {
-            isRequired: {
-                message: "Пароль обязателен для заполнения."
-            },
-            isCapitalSymbol: {
-                message: "Пароль должен содержать минимум одну заглавную букву."
-            },
-            isDigit: {
-                message: "Пароль должен содержать минимум одну цифру."
-            },
-            min: {
-                message: "Минимальная длина пароля 8 символов.",
-                value: 8
-            }
-        },
-        profession: {
-            isRequired: {
-                message: "Необходимо выбрать профессию."
-            }
-        },
-        licence: {
-            isRequired: {
-                message: "Необходимо подтвердить лицензионное соглашение."
-            }
-        }
-    };
 
     const validate = () => {
         const errors = validator(data, validatorConfig);
