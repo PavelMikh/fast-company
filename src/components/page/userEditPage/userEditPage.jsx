@@ -11,11 +11,9 @@ import MultiSelectField from "../../common/form/multiSelectField";
 const UserEditPage = ({ history, urlParam, id }) => {
     const [data, setData] = useState({
         email: "",
-        password: "",
         profession: "",
         sex: "male",
-        qualities: [],
-        licence: false
+        qualities: []
     });
     const [user, setUser] = useState();
     const [professions, setProfessions] = useState();
@@ -66,14 +64,6 @@ const UserEditPage = ({ history, urlParam, id }) => {
                     onChange={handleChange}
                     name="email"
                     error={errors.email}
-                />
-                <TextField
-                    label="Пароль"
-                    type="password"
-                    value={data.password}
-                    onChange={handleChange}
-                    name="password"
-                    error={errors.password}
                 />
                 <SelectField
                     label="Профессия"
