@@ -8,8 +8,7 @@ import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
 
-const EditForm = ({ initialValue, onSubmit }) => {
-    console.log("initial value", initialValue);
+const EditForm = ({ initialValue, onSubmit, user }) => {
     const [data, setData] = useState(initialValue);
     const [professions, setProfessions] = useState();
     const [qualities, setQualities] = useState({});
@@ -30,10 +29,36 @@ const EditForm = ({ initialValue, onSubmit }) => {
         validate();
     }, [data]);
 
+    const prepareData = () => {
+        const editableDataKeys = Object.keys(data);
+        const preparedData = Object.keys(user).reduce((acc, keyName) => {
+            if (editableDataKeys.includes(keyName)) {
+                if (keyName === "profession") {
+                    acc[keyName] = professions.find((profession) => profession._id === data[keyName]);
+                    return acc;
+                }
+                if (keyName === "qualities") {
+                    acc[keyName] = data[keyName].map((quality) => Object.values(qualities).find((item) => item._id === quality.value));
+                    return acc;
+                }
+
+                acc[keyName] = data[keyName];
+                return acc;
+            }
+
+            acc[keyName] = user[keyName];
+            return acc;
+        }, {});
+
+        return preparedData;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
+        const newData = prepareData();
+        api.users.update(user._id, newData);
         onSubmit();
     };
 
@@ -92,7 +117,8 @@ const EditForm = ({ initialValue, onSubmit }) => {
 
 EditForm.propTypes = {
     initialValue: PropTypes.object,
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    user: PropTypes.object
 };
 
 export default EditForm;

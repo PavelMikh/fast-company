@@ -19,7 +19,7 @@ const UserEditPage = ({ history, urlParam, id }) => {
         const data = {
             email: "",
             profession: "",
-            sex: "male",
+            sex: "",
             qualities: []
         };
         const initialValue = Object.keys(data).reduce((acc, keyName) => {
@@ -38,6 +38,7 @@ const UserEditPage = ({ history, urlParam, id }) => {
                 }
 
                 acc[keyName] = user[keyName];
+                return acc;
             }
             return acc;
         }, {});
@@ -54,6 +55,7 @@ const UserEditPage = ({ history, urlParam, id }) => {
                             <EditForm
                                 initialValue={getInitialValue()}
                                 onSubmit={handleSubmit}
+                                user={user}
                             />
                         </div>
                     </div>
