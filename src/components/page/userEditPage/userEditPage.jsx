@@ -40,6 +40,7 @@ const UserEditPage = ({ history, urlParam, id }) => {
                 acc[keyName] = user[keyName];
                 return acc;
             }
+
             return acc;
         }, {});
 
